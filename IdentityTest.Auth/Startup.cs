@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityTest.Auth.Configuration;
 using IdentityTest.Auth.Data;
 using IdentityTest.Auth.Models;
 using Microsoft.AspNetCore.Builder;
@@ -42,6 +43,13 @@ namespace IdentityTest.Auth
 
             // Add framework services.
             services.AddMvc();
+
+            // Add IdentityServer
+            services.AddIdentityServer()
+                    .AddTemporarySigningCredential()
+                    .AddInMemoryClients(IdentityServerConfig.GetClients())
+                    .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
+                    .AddAspNetIdentity<ApplicationUser>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +59,8 @@ namespace IdentityTest.Auth
             loggerFactory.AddDebug();
 
             app.UseIdentity();
+
+            app.UseIdentityServer();
 
             app.UseMvc();
         }
