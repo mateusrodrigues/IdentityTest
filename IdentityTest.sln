@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityTest.API", "IdentityTest.API\IdentityTest.API.csproj", "{A6AF8A71-A8B0-4695-8279-B1C07585979C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IdentityTest.Auth", "IdentityTest.Auth\IdentityTest.Auth.csproj", "{51E18FB1-979B-4103-98EE-49F4AA7F4C9B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A6AF8A71-A8B0-4695-8279-B1C07585979C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6AF8A71-A8B0-4695-8279-B1C07585979C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6AF8A71-A8B0-4695-8279-B1C07585979C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6AF8A71-A8B0-4695-8279-B1C07585979C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51E18FB1-979B-4103-98EE-49F4AA7F4C9B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51E18FB1-979B-4103-98EE-49F4AA7F4C9B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51E18FB1-979B-4103-98EE-49F4AA7F4C9B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51E18FB1-979B-4103-98EE-49F4AA7F4C9B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
