@@ -62,7 +62,8 @@ namespace IdentityTest.Auth
 
             app.UseIdentityServer();
 
-            app.UseMvc();
+            app.UseStaticFiles();
+            app.UseMvcWithDefaultRoute();
         }
     }
 }
