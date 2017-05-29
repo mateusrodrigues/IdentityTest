@@ -8,6 +8,11 @@
     <Folder Include="Models\ViewModels\" />
     <Folder Include="Configuration\" />
     <Folder Include="wwwroot\" />
+    <Folder Include="Controllers\IdentityServer\" />
+    <Folder Include="Controllers\IdentityServer\Account\" />
+    <Folder Include="Controllers\IdentityServer\Consent\" />
+    <Folder Include="Controllers\IdentityServer\Grants\" />
+    <Folder Include="Controllers\IdentityServer\Home\" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore" Version="1.1.2" />
