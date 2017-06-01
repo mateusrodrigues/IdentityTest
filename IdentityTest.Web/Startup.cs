@@ -2,18 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using IdentityTest.Auth.Configuration;
-using IdentityTest.Auth.Data;
-using IdentityTest.Auth.Models;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using System.IdentityModel.Tokens.Jwt;
 
-namespace IdentityTest.Auth
+namespace IdentityTest.Web
 {
     public class Startup
     {
@@ -32,28 +28,6 @@ namespace IdentityTest.Auth
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            // Add DB context
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlite(Configuration.GetConnectionString("DefaultConnection")));
-
-            // Add Identity
-            services.AddIdentity<ApplicationUser, IdentityRole>()
-                .AddEntityFrameworkStores<ApplicationDbContext>()
-                .AddDefaultTokenProviders();
-
-            // Add IdentityServer
-            services.AddIdentityServer(/*options =>
-                    {
-                        options.Events.RaiseSuccessEvents = true;
-                        options.Events.RaiseFailureEvents = true;
-                        options.Events.RaiseErrorEvents = true;
-                    }*/)
-                    .AddTemporarySigningCredential()
-                    .AddInMemoryIdentityResources(IdentityServerConfig.GetIdentityResources())
-                    .AddInMemoryApiResources(IdentityServerConfig.GetApiResources())
-                    .AddInMemoryClients(IdentityServerConfig.GetClients())
-                    .AddAspNetIdentity<ApplicationUser>();
-
             // Add framework services.
             services.AddMvc();
         }
@@ -64,13 +38,49 @@ namespace IdentityTest.Auth
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            app.UseIdentity();
+            if (env.IsDevelopment())
+            {
+                app.UseDeveloperExceptionPage();
+                app.UseBrowserLink();
+            }
+            else
+            {
+                app.UseExceptionHandler("/Home/Error");
+            }
 
-            app.UseIdentityServer();
+            app.UseCookieAuthentication(new CookieAuthenticationOptions
+            {
+                AuthenticationScheme = "Cookies"
+            });
+
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
+            app.UseOpenIdConnectAuthentication(new OpenIdConnectOptions
+            {
+                AuthenticationScheme = "oidc",
+                SignInScheme = "Cookies",
+
+                Authority = Constants.Addresses.AuthAddress.ToString(),
+                RequireHttpsMetadata = true,
+
+                ClientId = "mvc",
+                ClientSecret = "secret",
+
+                ResponseType = "code id_token",
+                Scope = { "api", "offline_access" },
+
+                GetClaimsFromUserInfoEndpoint = true,
+                SaveTokens = true
+            });
 
             app.UseStaticFiles();
 
-            app.UseMvcWithDefaultRoute();
+            app.UseMvc(routes =>
+            {
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
+            });
         }
     }
 }
